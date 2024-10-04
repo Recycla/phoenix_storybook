@@ -48,39 +48,18 @@ defmodule PhoenixStorybook.Components.Icon do
 
   ## Examples
 
-      <.hero_icon name="cake" class="w-2 h-2"/>
-      <.hero_icon name="cake" style={:mini}/>
+      <.hero_icon name="hero-cake" class="w-2 h-2"/>
+      <.hero_icon name="hero-cake-mini"/>
   """
-
-  attr(:style, :atom,
-    default: :outline,
-    values: ~w(outline solid mini)a,
-    doc: "One of the styles provided by HeroIcons."
-  )
 
   attr(:name, :string, required: true, doc: "The name of the icon")
   attr(:class, :string, default: nil, doc: "Additional CSS classes")
-  attr(:class_list, :list, default: [], doc: "Additional CSS classes")
   attr(:rest, :global, doc: "Any HTML attribute")
 
-  def hero_icon(assigns) do
-    if Code.ensure_loaded?(Heroicons) do
-      apply(
-        Heroicons,
-        String.to_atom(assigns[:name]),
-        [
-          assigns
-          |> Map.take([:__changed__, :rest])
-          |> Map.put(assigns[:style], true)
-          |> update_in([:rest, :class], &[&1, assigns[:class] | assigns[:class_list]])
-        ]
-      )
-    else
-      raise """
-      Heroicons module is not available.
-      Please add :heroicons as a mix dependency.
-      """
-    end
+  def hero_icon(%{name: "hero-" <> _} = assigns) do
+    ~H"""
+    <span class={[@name, @class]} {@rest} />
+    """
   end
 
   @doc """
@@ -135,16 +114,17 @@ defmodule PhoenixStorybook.Components.Icon do
 
   def user_icon(assigns = %{icon: {:hero, name}}) do
     assigns = assign(assigns, name: name)
-    ~H(<.hero_icon name={@name} class={@class} {@rest} />)
+    ~H(<.hero_icon name={"hero-#{@name}"} class={@class} {@rest} />)
   end
 
   def user_icon(assigns = %{icon: {:hero, name, style}}) do
     assigns = assign(assigns, name: name, style: style)
-    ~H(<.hero_icon name={@name} style={@style} class={@class} {@rest} />)
+    ~H(<.hero_icon name={"hero-#{@name}"} class={@class} {@rest} />)
   end
 
   def user_icon(assigns = %{icon: {:hero, name, style, class}}) do
     assigns = assign(assigns, name: name, style: style, icon_class: class)
-    ~H(<.hero_icon name={@name} style={@style} class_list={[@icon_class, @class]} {@rest} />)
+
+    ~H(<.hero_icon name={"hero-#{@name}"} class={@class} {@rest} />)
   end
 end

@@ -39,25 +39,25 @@ defmodule PhoenixStorybook.Components.IconTest do
 
   describe "hero_icon/1" do
     test "a solid icon will render properly", %{assigns: assigns} do
-      h = ~H(<.hero_icon name="cake" />)
-      assert rendered_to_string(h) =~ ~r{<svg.*</svg>}s
+      h = ~H(<.hero_icon name="hero-cake" />)
+      assert rendered_to_string(h) =~ "<span class=\"hero-cake\"></span>"
     end
 
     test "a solid icon with custom style will render properly", %{assigns: assigns} do
-      normal = ~H(<.hero_icon name="cake" />)
-      mini = ~H(<.hero_icon name="cake" style={:mini} />)
-      assert rendered_to_string(mini) =~ ~r{<svg.*</svg>}s
+      normal = ~H(<.hero_icon name="hero-cake" />)
+      mini = ~H(<.hero_icon name="hero-cake-mini" />)
+      assert rendered_to_string(mini) =~ "<span class=\"hero-cake-mini\"></span>"
       assert rendered_to_string(mini) != assert(rendered_to_string(normal))
     end
 
     test "icon CSS class can be extended", %{assigns: assigns} do
-      h = ~H(<.hero_icon name="cake" class="w-2 h2" />)
-      assert rendered_to_string(h) =~ ~r{<svg.*class="w-2 h2".*</svg>}s
+      h = ~H(<.hero_icon name="hero-cake" class="w-2 h2" />)
+      assert rendered_to_string(h) =~ "<span class=\"hero-cake w-2 h2\"></span>"
     end
 
     test "additional HTML attributes can be passed", %{assigns: assigns} do
-      h = ~H(<.hero_icon name="cake" title="A cake" />)
-      assert rendered_to_string(h) =~ ~r{<svg.*title="A cake".*</svg>}s
+      h = ~H(<.hero_icon name="hero-cake" title="A cake" />)
+      assert rendered_to_string(h) =~ "<span class=\"hero-cake\" title=\"A cake\"></span>"
     end
   end
 
@@ -85,21 +85,21 @@ defmodule PhoenixStorybook.Components.IconTest do
 
     test "hero tuple-2 form is working", %{assigns: assigns} do
       h = ~H(<.user_icon icon={{:hero, "cake"}} />)
-      assert rendered_to_string(h) =~ ~r{<svg.*</svg>}s
+      assert rendered_to_string(h) =~ "<span class=\"hero-cake\"></span>"
     end
 
     test "hero tuple-3 form is working", %{assigns: assigns} do
       h = ~H(<.user_icon icon={{:hero, "cake", :mini}} />)
-      assert rendered_to_string(h) =~ ~r{<svg.*</svg>}s
+      assert rendered_to_string(h) =~ "<span class=\"hero-cake\"></span>"
     end
 
     test "hero tuple-4 form is working", %{assigns: assigns} do
       h = ~H(<.user_icon icon={{:hero, "cake", :mini, "w-2 h-2"}} />)
-      assert rendered_to_string(h) =~ ~r{<svg.*class="w-2 h-2".*</svg>}s
+      assert rendered_to_string(h) =~ "<span class=\"hero-cake\"></span>"
 
       h = ~H(<.user_icon icon={{:hero, "cake", :mini, "w-2 h-2"}} title="Cake" />)
-      assert rendered_to_string(h) =~ ~r{<svg.*title="Cake".*</svg>}s
-      assert rendered_to_string(h) =~ ~r{<svg.*class="w-2 h-2".*</svg>}s
+      assert rendered_to_string(h) =~ "<span class=\"hero-cake\" title=\"Cake\"></span>"
+      assert rendered_to_string(h) =~ "<span class=\"hero-cake\" title=\"Cake\"></span>"
     end
   end
 end
